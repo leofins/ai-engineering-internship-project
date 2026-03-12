@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+  # Backend FastAPI
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: rag-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - LLM_PROVIDER=openai
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_MODEL=gpt-4-turbo-preview
+      - CHROMA_DB_PATH=/app/data/chroma_db
+      - UPLOAD_DIR=/app/data/uploads
+      - CHUNK_SIZE=1000
+      - CHUNK_OVERLAP=200
+      - TOP_K_RESULTS=5
+      - SIMILARITY_THRESHOLD=0.3
+    volumes:
+      - ./backend/data:/app/data
+      - ./backend/app:/app/app
+    networks:
+      - rag-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # ChromaDB (opcional - se usar versão HTTP)
+  # chromadb:
+  #   image: ghcr.io/chroma-core/chroma:latest
+  #   container_name: rag-chromadb
+  #   ports:
+  #     - "8001:8000"
+  #   environment:
+  #     - IS_PERSISTENT=True
+  #   volumes:
+  #     - ./backend/data/chroma_db:/chroma/data
+  #   networks:
+  #     - rag-network
+
+  # Frontend (Node.js)
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: rag-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - rag-network
+
+networks:
+  rag-network:
+    driver: bridge
+
+volumes:
+  chroma_data:
+  uploads_data:
