@@ -22,32 +22,32 @@ Este projeto foi desenvolvido como parte de um estágio em Engenharia de IA, cob
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     Frontend (React 19)                      │
+│                     Frontend (React 19)                     │
 │  - Chat Interface com Streaming                             │
-│  - Document Upload Manager                                 │
-│  - Source Visualization                                    │
+│  - Document Upload Manager                                  │
+│  - Source Visualization                                     │
 └────────────────────┬────────────────────────────────────────┘
                      │ HTTP/WebSocket
 ┌────────────────────▼────────────────────────────────────────┐
-│              Backend API (FastAPI)                           │
+│              Backend API (FastAPI)                          │
 │  ┌──────────────────────────────────────────────────────┐   │
 │  │ Endpoints:                                           │   │
-│  │ - POST /api/chat          → Chat com RAG            │   │
-│  │ - POST /api/chat/stream   → Chat com Streaming      │   │
-│  │ - POST /api/upload        → Upload de Documentos    │   │
-│  │ - POST /api/search        → Busca Semântica         │   │
-│  │ - GET  /api/collection    → Estatísticas            │   │
+│  │ - POST /api/chat          → Chat com RAG             │   │
+│  │ - POST /api/chat/stream   → Chat com Streaming       │   │
+│  │ - POST /api/upload        → Upload de Documentos     │   │
+│  │ - POST /api/search        → Busca Semântica          │   │
+│  │ - GET  /api/collection    → Estatísticas             │   │
 │  └──────────────────────────────────────────────────────┘   │
-└────────────────────┬────────────────────────────────────────┘
-                     │
-        ┌────────────┼────────────┐
-        │            │            │
+└───────────────────┬─────────────────────────────────────────┘
+                    │
+        ┌───────────┼───────────┐
+        │           │           │
    ┌────▼───┐  ┌────▼────┐  ┌───▼──────┐
    │   LLM  │  │ RAG     │  │ Document │
    │Provider│  │ System  │  │Processor │
    └────┬───┘  └────┬────┘  └───┬──────┘
         │           │           │
-   ┌────▼───────────▼───────────▼──────┐
+   ┌────▼───────────▼───────────▼───────┐
    │      ChromaDB (Vector Store)       │
    │  - Embeddings                      │
    │  - Semantic Search                 │
