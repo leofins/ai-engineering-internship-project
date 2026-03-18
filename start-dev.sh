@@ -57,7 +57,9 @@ if command -v open >/dev/null 2>&1; then
   open "http://localhost:3000" >/dev/null 2>&1 || true
 fi
 
-wait -n "$BACKEND_PID" "$FRONTEND_PID"
+# Removido -n para compatibilidade com macOS (bash 3.2)
+# wait -n "$BACKEND_PID" "$FRONTEND_PID"
+wait "$BACKEND_PID" "$FRONTEND_PID"
 echo "Um dos servicos finalizou. Parando o restante..."
 kill "$BACKEND_PID" "$FRONTEND_PID" 2>/dev/null || true
 wait || true
